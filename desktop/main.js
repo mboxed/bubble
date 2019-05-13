@@ -1,0 +1,74 @@
+const { app, BrowserWindow, webFrame, Menu } = require('electron')
+const path = require('path')
+const url = require('url')
+const shell = require('electron').shell
+
+let isShown = true
+
+app.win = null
+
+app.on('ready', () => {
+  app.win = new BrowserWindow({
+    width: 800,
+    height: 530,
+    minWidth: 310,
+    minHeight: 350,
+    backgroundColor: '#000',
+    resizable: true,
+    frame: process.platform !== 'darwin',
+    skipTaskbar: process.platform === 'darwin',
+    autoHideMenuBar: process.platform === 'darwin',
+    webPreferences: { zoomFactor: 1.0, backgroundThrottling: false, nodeIntegration: true, }
+  })
+
+  app.win.loadURL(`file://${__dirname}/sources/index.html`)
+
+  app.win.on('closed', () => {
+    win = null
+    app.quit()
+  })
+
+  app.win.on('hide', function () {
+    isShown = false
+  })
+
+  app.win.on('show', function () {
+    isShown = true
+  })
+
+  app.on('window-all-closed', () => {
+    app.quit()
+  })
+
+  app.on('activate', () => {
+    if (app.win === null) {
+      createWindow()
+    } else {
+      app.win.show()
+    }
+  })
+})
+
+app.inspect = function () {
+  app.win.toggleDevTools()
+}
+
+app.toggleFullscreen = function () {
+  app.win.setFullScreen(!app.win.isFullScreen())
+}
+
+app.toggleVisible = function () {
+  if (process.platform === 'darwin') {
+    if (isShown && !app.win.isFullScreen()) { app.win.hide() } else { app.win.show() }
+  } else {
+    if (!app.win.isMinimized()) { app.win.minimize() } else { app.win.restore() }
+  }
+}
+
+app.injectMenu = function (menu) {
+  try {
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
+  } catch (err) {
+    console.warn('Cannot inject menu.')
+  }
+}

@@ -1,0 +1,84 @@
+@charset "utf-8";
+:root {
+    --font-size: 12px;
+    --line-height: 20px;
+    --font-family: 'custom_mono';
+}
+
+body {
+    height: 100vh;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    overflow: auto;
+    transition: background-color 500ms, filter 150ms;
+    overflow: hidden;
+}
+
+body navi {
+    display: block;
+    width: calc((100vw / 4) - 40px);
+    left: 0px;
+    top: 40px;
+    position: absolute;
+    padding: 30px 0px 0px 30px;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    overflow: auto;
+    transition: opacity 200ms 200ms, translateY 150ms, width 200ms;
+    opacity: 1;
+    height: calc(100vh - 120px);
+    /*background: rgba(0,0,0,0.15);*/
+}
+
+body #console {
+    display: block;
+    position: absolute;
+    left: calc((100vw / 4) - 40px);
+    top: 40px;
+    width: calc(100vw - ((100vw / 4) - 40px));
+    transition: opacity 200ms 200ms, translateY 150ms, width 200ms;
+}
+
+body #console span.line {
+    display: block;
+}
+
+body drag {
+    display: block;
+    width: 100vw;
+    height: 40px;
+    position: fixed;
+    top: 0px;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    background-color: transparent !important;
+}
+
+body #textbox {
+    font-family: var(--font-family);
+    height: 2em;
+    display: block;
+    width: 70vw;
+    padding-left:2.5vw;
+    position: fixed;
+    left: 25vw;
+    bottom: 1vh;
+    border-radius: 1em;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    resize: none;
+    background: transparent;
+    overflow: auto;
+    max-width: 90%;
+    transition: left 200ms;
+    margin-left: 1.25vw;
+}
+
+span.system { 
+    color: var(--f_high);
+    background-color: var(--b_low);
+}
+
+code {
+    border: 1px solid var(--f_med);
+}
