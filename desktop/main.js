@@ -14,6 +14,7 @@ app.on('ready', () => {
     minWidth: 310,
     minHeight: 350,
     backgroundColor: '#000',
+    icon: __dirname + '/' + { darwin: 'bubble.icns', linux: 'bubble.png', win32: 'bubble.ico' }[process.platform] || 'bubble.ico',
     resizable: true,
     frame: process.platform !== 'darwin',
     skipTaskbar: process.platform === 'darwin',

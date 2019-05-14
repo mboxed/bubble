@@ -1,4 +1,5 @@
 const Theme = require('./scripts/lib/theme')
+const Command = require('./scripts/lib/command')
 const Navi = require('./scripts/navi')
 const Console = require('./scripts/console')
 const Connection = require('./scripts/connection')
@@ -7,37 +8,20 @@ const Textbox = require('./scripts/textbox')
 class Bubble {
     constructor() {
         this.theme = new Theme()
+        this.command = new Command()
         this.navi = new Navi()
-        this.console = new Console()
+        this.cons = new Console()
         this.textbox = new Textbox()
         this.connection = new Connection()
         this.drag_el = document.createElement('drag')
     }
 
     onCommand(line) {
-        this.console.append(`<system> ${line}`)
+        this.cons.append(`<system> ${line}`)
         if(line.startsWith("!")) {
             var parsed = line.substring(1).split(" ")
-            switch(parsed[0]) {
-                case 'help':
-                    this.console.append("<code>!nick</code> - nickname operations", true)
-                    this.console.append("(type <code>!help &lt;command&gt;</code> for more info on a command)", true)
-                    break;
-                case 'nick':
-                    if(parsed[1] == "set") {
-                        if(parsed[2]) {
-                        localStorage.setItem("nick", parsed[2])
-                        this.console.append(`Updated nickname to <code>${localStorage.getItem("nick")}</code>.`, true)
-                        } else {
-                            this.console.append(`<code>!nick set</code> requires a nickname.`, true)
-                        }
-                    } else {
-                        this.console.append(`Your current nickname is <code>${localStorage.getItem("nick")}</code>.`, true)
-                    }
-                    break;
-                default:
-                    this.console.append(`Unknown command <code>!${parsed[0]}</code>`, true)
-            }
+            var cmd = parsed.splice(0,1)
+            this.command.callCommand(cmd, parsed, this.cons, this.connection)
         }
         this.update()
     }
@@ -45,7 +29,7 @@ class Bubble {
     install(host = document.body) {
         this.navi.install(host)
         this.textbox.install(host)
-        this.console.install(host)
+        this.cons.install(host)
 
         host.appendChild(this.drag_el)
         this.theme.install(host)
@@ -53,17 +37,17 @@ class Bubble {
 
     start() {
         this.theme.start()
-        this.connection.start(this.console)
+        this.connection.start(this.cons)
 
-        this.console.append("Welcome to Bubble.", true)
-        this.console.append("----------------------------")
+        this.cons.append("Welcome to Bubble.", true)
+        this.cons.append("----------------------------")
 
         this.update()
     }
 
     update() {
         this.navi.update()
-        this.console.update()
+        this.cons.update()
     }
 }
 

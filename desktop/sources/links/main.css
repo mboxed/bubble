@@ -5,6 +5,8 @@
     --font-family: 'custom_mono';
 }
 
+::-webkit-scrollbar { display: none; margin: 0; padding: 0; }
+
 body {
     height: 100vh;
     font-family: var(--font-family);
@@ -12,7 +14,10 @@ body {
     overflow: auto;
     transition: background-color 500ms, filter 150ms;
     overflow: hidden;
+    background: #222;
 }
+
+* {background-color: inherit;}
 
 body navi {
     display: block;
@@ -27,7 +32,6 @@ body navi {
     transition: opacity 200ms 200ms, translateY 150ms, width 200ms;
     opacity: 1;
     height: calc(100vh - 120px);
-    /*background: rgba(0,0,0,0.15);*/
 }
 
 body #console {
@@ -36,7 +40,9 @@ body #console {
     left: calc((100vw / 4) - 40px);
     top: 40px;
     width: calc(100vw - ((100vw / 4) - 40px));
+    height: calc(100vh - (2em) - 80px);
     transition: opacity 200ms 200ms, translateY 150ms, width 200ms;
+    overflow: auto;
 }
 
 body #console span.line {
@@ -58,12 +64,10 @@ body #textbox {
     font-family: var(--font-family);
     height: 2em;
     display: block;
-    width: 70vw;
-    padding-left:2.5vw;
+    width: 75vw;
     position: fixed;
-    left: 25vw;
+    left: 20vw;
     bottom: 1vh;
-    border-radius: 1em;
     font-size: var(--font-size);
     line-height: var(--line-height);
     resize: none;

@@ -1,4 +1,4 @@
-bubbles
+bubble
 ========
 
 An in-progress implementation of an IRC client.
