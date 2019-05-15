@@ -5,6 +5,9 @@ const Console = require('./scripts/console')
 const Connection = require('./scripts/connection')
 const Textbox = require('./scripts/textbox')
 
+const Line = require('./scripts/lib/types/line').Line
+const LineType = require('./scripts/lib/types/line').LineType
+
 class Bubble {
     constructor() {
         this.theme = new Theme()
@@ -17,7 +20,7 @@ class Bubble {
     }
 
     onCommand(line) {
-        this.cons.append(`<system> ${line}`)
+        this.cons.append(new Line(`${line}`, LineType.NORMAL, "command"))
         if(line.startsWith("!")) {
             var parsed = line.substring(1).split(" ")
             var cmd = parsed.splice(0,1)
@@ -39,8 +42,8 @@ class Bubble {
         this.theme.start()
         this.connection.start(this.cons)
 
-        this.cons.append("Welcome to Bubble.", true)
-        this.cons.append("----------------------------")
+        this.cons.append(new Line("Welcome to Bubble.", LineType.SYSTEM))
+        this.cons.append(new Line("----------------------------"))
 
         this.update()
     }

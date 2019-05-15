@@ -1,5 +1,3 @@
-var escape = require('escape-html');
-
 class Console {
     constructor() {
         this.el = document.createElement("div")
@@ -27,14 +25,14 @@ class Console {
             this.buffer.splice(0,this.buffer.length-this.buflen)
         }
         this.buffer.forEach(line => {
-            html += `<span class='line'>${!line.system ? escape(line.text) : "<span class='system'>" + line.text + "</span>"}</span>` + "\n"
+            html += line.toHtml()
         });
         this.el.innerHTML = html
         this.el.scrollTop = this.el.scrollHeight
     }
 
     append(line, system=false) {
-        this.buffer.push({text: line, system: system})
+        this.buffer.push(line)
     }
 }
 

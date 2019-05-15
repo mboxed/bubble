@@ -1,3 +1,8 @@
+const Line = require('./types/line').Line
+const LineType = require('./types/line').LineType
+
+const escape = require('escape-html')
+
 class Command {
     constructor() {
     }
@@ -6,24 +11,24 @@ class Command {
         if(this[name]) {
             this[name](args, cons, connection)
         } else {
-            cons.append(`Unknown command <code>!${name}</code>`, true)
+            cons.append(new Line(`Unknown command <code>!${name}</code>`, LineType.SYSTEM))
         }
     } 
 
     help(args, cons, connection) {
-        cons.append("<code>!nickname</code> - nickname operations", true)
-        cons.append("<code>!realname</code> - realname operations", true)
-        cons.append("<code>!connect</code>  - connects to a server", true)
-        cons.append("<code>!quit</code>     - quits from a server", true)
-        cons.append("<code>!buflen</code>   - sets the scrollback buffer length", true)
-        cons.append("(type <code>!help &lt;command&gt;</code> for more info on a command)", true)
+        cons.append(new Line("<code>!nickname</code> - nickname operations", LineType.SYSTEM))
+        cons.append(new Line("<code>!realname</code> - realname operations", LineType.SYSTEM))
+        cons.append(new Line("<code>!connect</code>  - connects to a server", LineType.SYSTEM))
+        cons.append(new Line("<code>!quit</code>     - quits from a server", LineType.SYSTEM))
+        cons.append(new Line("<code>!buflen</code>   - sets the scrollback buffer length", LineType.SYSTEM))
+        cons.append(new Line("(type <code>!help &lt;command&gt;</code> for more info on a command)", LineType.SYSTEM))
     }
 
     nickname(args, cons, connection) {
         if(args[0] == "set") {
             connection.setNickname(args[1], cons)
         } else {
-            cons.append(`Your current nickname is <code>${localStorage.getItem("nickname")}</code>.`, true)
+            cons.append(new Line(`Your current nickname is <code>${escape(localStorage.getItem("nickname"))}</code>.`, LineType.SYSTEM))
         }
     }
 
@@ -32,7 +37,7 @@ class Command {
             args.splice(0,1)
             connection.setRealname(args.join(" "), cons)
         } else {
-            cons.append(`Your current realname is <code>${localStorage.getItem("realname")}</code>.`, true)
+            cons.append(new Line(`Your current realname is <code>${escape(localStorage.getItem("realname"))}</code>.`, LineType.SYSTEM))
         }
     }
 
@@ -46,16 +51,16 @@ class Command {
         if(connection.isConnected()) {
             connection.quit(args.join(" "), cons)
         } else {
-            cons.append("Unable to <code>!quit</code> - no connection currently active!", true)
+            cons.append(new Line("Unable to <code>!quit</code> - no connection currently active!", LineType.SYSTEM))
         }
     }
 
     buflen(args, cons, _) {
         if(args[0] && parseInt(args[0]) != NaN) {
             cons.setBuflen(parseInt(args[0]))
-            cons.append(`Set buffer length to ${cons.buflen}`, true)
+            cons.append(new Line(`Set buffer length to ${cons.buflen}`, LineType.SYSTEM))
         } else {
-            cons.append(`Your current buffer length is ${cons.buflen}`, true)
+            cons.append(new Line(`Your current buffer length is ${cons.buflen}`, LineType.SYSTEM))
         }
     }
 
@@ -64,10 +69,10 @@ class Command {
             if(args[0]) {
                 connection.join(args[0], cons)
             } else {
-                cons.append(`<code>!join</code> needs a channel argument`, true)
+                cons.append(new Line(`<code>!join</code> needs a channel argument`, LineType.SYSTEM))
             }
         } else {
-            cons.append(`Unable to <code>!join</code> - no connection currently active!`, true)
+            cons.append(new Line(`Unable to <code>!join</code> - no connection currently active!`, LineType.SYSTEM))
         }
     }
 }

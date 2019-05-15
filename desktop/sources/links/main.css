@@ -43,6 +43,7 @@ body #console {
     height: calc(100vh - (2em) - 80px);
     transition: opacity 200ms 200ms, translateY 150ms, width 200ms;
     overflow: auto;
+    line-height: 1.25em;
 }
 
 body #console span.line {
@@ -81,6 +82,15 @@ body #textbox {
 span.system { 
     color: var(--f_high);
     background-color: var(--b_low);
+}
+
+span.notice {
+    color: var(--f_high);
+    font-weight: bold;
+}
+
+span.debug {
+    color: var(--f_low);
 }
 
 code {
